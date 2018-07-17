@@ -25,6 +25,7 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 public class tme {
+	//25枚目以降のフィルター
 
 	public static int ALL = 35;
 	public static int First = 25;
