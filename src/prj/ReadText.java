@@ -1,5 +1,6 @@
 package prj;
 
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -7,9 +8,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class ReadText {
 
 	List<Integer> list = new ArrayList<>();
+	public List<Point> list2 = new ArrayList<Point>();
 
 	public ReadText(String x) {
 		getText(x);
