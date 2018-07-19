@@ -1,8 +1,9 @@
 package knn;
 
-import java.awt.Point;
 import java.util.List;
 import java.util.Queue;
+
+import org.opencv.core.Point;
 
 public class Euclid implements Calc {
 
@@ -32,12 +33,10 @@ public class Euclid implements Calc {
 		for (int j = 0; j < list.size(); j++) {
 			for (int i = 0; i < 20; i += 2) {//listのlistの中身をユークリッドとる
 				Point p = copy.remove();
-				x = p.getX();//入力画像のx
-				y = p.getY();//入力画像のy
-				String objStr1 = list.get(0).get(i).toString();
-				String objStr2 = list.get(0).get(i + 1).toString();
-				double lx = new Double(objStr1).doubleValue();
-				double ly = new Double(objStr2).doubleValue();
+				x = p.x;//入力画像のx
+				y = p.y;//入力画像のy
+				double lx = list.get(j).get(i).x;
+				double ly = list.get(j).get(i).y;
 				eucli += (x - lx) * (x - lx) + (y - ly) * (y - ly);//足していく
 				if(euclid>eucli) euclid=eucli;
 				

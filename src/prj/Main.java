@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.ArrayDeque;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -29,6 +31,8 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.videoio.VideoCapture;
+
+import knn.knn;
 
 public class Main extends JPanel {
 
@@ -144,6 +148,8 @@ public class Main extends JPanel {
 		int ave_width = 0;
 		int ave_height = 0;
 		int count = 0;
+		
+		Queue<Point> queue = new ArrayDeque<Point>();
 
 		HighGui hi = new HighGui();
 
@@ -263,6 +269,17 @@ public class Main extends JPanel {
 						pw.print("\n");
 						Core.normalize(planes.get(0), DST, 0, 255, Core.NORM_MINMAX);
 						SRC[0] = WriteRec(DST, SRC[0], ave_width, ave_height);
+						
+						//実装
+						queue.add(getPos(DST));
+						if(queue.size()>10) queue.poll();
+						knn k = new knn();
+						if(queue.size()==10) {
+							int label = k.ReturnLabel(queue);
+							LabelName ln = new LabelName();
+							String name = ln.Name(label);
+							System.out.println(name);
+						}
 					}
 
 					//frame.setSize(SRC[0].width() + 40, SRC[0].height() + 40);

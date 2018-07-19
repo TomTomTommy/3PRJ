@@ -1,8 +1,10 @@
 package knn;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.opencv.core.Point;
+
 
 
 

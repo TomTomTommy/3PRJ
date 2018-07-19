@@ -2,6 +2,10 @@ package knn;
 
 import java.io.Serializable;
 
+/**
+ * @author g16954yh
+ * ラベルと距離を扱うクラス
+ */
 public class DataClass implements Serializable {
 
 	public int label;

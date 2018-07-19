@@ -2,7 +2,8 @@ package knn;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.Point;
+
+import org.opencv.core.Point;
 
 import prj.ReadText;
 
