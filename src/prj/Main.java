@@ -10,6 +10,8 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.ArrayDeque;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -30,12 +32,15 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.videoio.VideoCapture;
 
+import knn.Euclid;
+import knn.knn;
+
 public class Main extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private BufferedImage image;
 	public List<Mat> src = new ArrayList<Mat>(); //入力画像のリスト
-	public List<Integer> list = new ArrayList<Integer>(); //
+	public List<Integer> list = new ArrayList<Integer>(); 
 	private static int First = 30;
 	private static int now = 0;
 
@@ -65,7 +70,6 @@ public class Main extends JPanel {
 		byte[] data = new byte[cols * rows * elemSize];
 		int type;
 		matrix.get(0, 0, data);
-
 		switch (matrix.channels()) {
 		case 1:
 			type = BufferedImage.TYPE_BYTE_GRAY;
@@ -83,8 +87,6 @@ public class Main extends JPanel {
 		default:
 			return null;
 		}
-
-
 		BufferedImage image2 = new BufferedImage(cols, rows, type);
 		image2.getRaster().setDataElements(0, 0, cols, rows, data);
 		return image2;
@@ -144,6 +146,8 @@ public class Main extends JPanel {
 		int ave_width = 0;
 		int ave_height = 0;
 		int count = 0;
+		
+		Queue<Point> queue = new ArrayDeque<Point>();
 
 		HighGui hi = new HighGui();
 
@@ -211,7 +215,7 @@ public class Main extends JPanel {
 					 * 行動分析フェーズ
 					 * K最近傍法で行動のパターンを読み込む
 					 */
-
+					
 					if (makeFilter) {
 						//正解画像のフーリエ変換を作る
 						//顔の範囲取得
@@ -246,7 +250,7 @@ public class Main extends JPanel {
 						now++;
 
 					} else {
-						//System.out.println("トラッキング開始");
+						//("トラッキング開始");
 						Core.divide(NUM, DEN, ANS); //分子/分母
 
 						//フィルターをかける
@@ -263,6 +267,29 @@ public class Main extends JPanel {
 						pw.print("\n");
 						Core.normalize(planes.get(0), DST, 0, 255, Core.NORM_MINMAX);
 						SRC[0] = WriteRec(DST, SRC[0], ave_width, ave_height);
+						
+						//実装
+							if(queue.size()==0) {			
+							queue.add(getPos(DST));//必ず追加
+							}
+							double oldx=getPos(DST).x;//1つ前のx
+							double oldy=getPos(DST).y;//1つ前のy
+							if(queue.size()!=0) {
+							  if(oldx-getPos(DST).x<60&&oldy-getPos(DST).y<60)queue.add(getPos(DST));
+							}
+						//queue.add(getPos(DST));
+						if(queue.size()>18) queue.poll();
+						knn k = new knn();
+						if(queue.size()==18) {
+							int label = k.ReturnLabel(queue);
+							LabelName ln = new LabelName();
+							String name = ln.Name(label);
+							System.out.println(name);
+							Imgproc.rectangle(SRC[0],  new Point(270,178),  new Point(378,218),new Scalar(255,255,255),-1);
+							Imgproc.putText(SRC[0], name, new Point(275,205), Core.FONT_HERSHEY_COMPLEX,1,new Scalar(0,0,0) );//mat string org fontface fontsize color
+						}
+						now++;
+						
 					}
 
 					//frame.setSize(SRC[0].width() + 40, SRC[0].height() + 40);
