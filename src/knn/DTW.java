@@ -14,7 +14,9 @@ public  class DTW implements Calc {
 	Queue<Point> x1;
 	List<Point> xx1;
 	List<Point>xx2;
+	List<Double>ListResult=new ArrayList<Double>();
 	double dtw=Double.MAX_VALUE;
+	double d;
 	private static final long serialVersionUID = 1L;
 	
     private double width = 1;
@@ -41,6 +43,7 @@ public  class DTW implements Calc {
 		            for (int j = 1; j <= n2; j++) {
                     double costx = Math.abs(xx1.get(i-1).x- x2.get(j-1).x);
 	            	 double costy=Math.abs(xx1.get(i-1).y- x2.get(j-1).y);
+	            	 //double cost=Math.sqrt(costx*costx+costy*costy);
 	            	 double cost=costx+costy;
 
 		                double min = table[0][j - 1];
@@ -63,8 +66,7 @@ public  class DTW implements Calc {
 		        return table[0][n2];
 	 }
 	//実際の計算はここから
-	public double Calc(Sample x2) {//x1が入力画像のキュー、x2が
-		double d;
+	public labelDouble Calc(Sample x2) {//x1が入力画像のキュー、x2が
 		//System.out.println("samplesize"+x2.SampleDatas.size());
 		xx1=new ArrayList<Point>();//入力のコピー
 		xx2=new ArrayList<Point>();//サンプルをリストに入れる
@@ -74,12 +76,14 @@ public  class DTW implements Calc {
 		for(int i=0;i<x2.SampleDatas.size();i++) {	//ここは合ってる	 18まで回してる
 	    xx2=x2.SampleDatas.get(i);//i番目のデータ
 	    d=d(xx1,xx2);
-	    if(i==0)dtw=d;
-	    if(d<dtw)dtw=d;
+	    ListResult.add(d);
+	   // if(i==0)dtw=d;
+	    //if(d<dtw)dtw=d;
 		}
 		for(int i=0;i<xx1.size();i++) {//queueに入れ直し
 			x1.add(xx1.get(i));
 		}
+		labelDouble lD=new labelDouble(ListResult,x2.getLabel());
 		//サンプルデータの取得（できたらインターフェース内にかけると良いかも・・・）
 		
 		//実際の計算
@@ -87,7 +91,8 @@ public  class DTW implements Calc {
 		//計算結果をリストに入れる
 		//DataClass dc = new DataClass(lavel, dtw);  //labelと距離の計算結果(dtw)をクラス化する
 		//distanceData.add(dc);
-		return dtw;
+		//return dtw;
+		return lD;
 	}
 
 }

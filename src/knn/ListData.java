@@ -17,7 +17,6 @@ public class ListData {
 			String text="label"+labelID+"/data"+i;
 		ReadText data=new ReadText(text);//data i をリストに追加
 		list.add(data.list2);//data.listはただのpoint型のlist
-		//System.out.println(list.size()+"リストのサイズ");
 		}
 		return list;
 	}

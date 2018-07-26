@@ -163,7 +163,7 @@ public class Main extends JPanel {
 		VideoCapture capture = new VideoCapture(0);
 
 		 // FileWriterクラスのオブジェクトを生成する
-		 FileWriter file = new FileWriter("data2");
+		 FileWriter file = new FileWriter("data1");
          // PrintWriterクラスのオブジェクトを生成する
          PrintWriter pw = new PrintWriter(new BufferedWriter(file));
 
@@ -250,7 +250,7 @@ public class Main extends JPanel {
 						now++;
 
 					} else {
-						//System.out.println("トラッキング開始");
+						//("トラッキング開始");
 						Core.divide(NUM, DEN, ANS); //分子/分母
 
 						//フィルターをかける
@@ -269,17 +269,24 @@ public class Main extends JPanel {
 						SRC[0] = WriteRec(DST, SRC[0], ave_width, ave_height);
 						
 						//実装
-						
-						if(now%5==0)queue.add(getPos(DST));//5フレームごと
+							if(queue.size()==0) {			
+							queue.add(getPos(DST));//必ず追加
+							}
+							double oldx=getPos(DST).x;//1つ前のx
+							double oldy=getPos(DST).y;//1つ前のy
+							if(queue.size()!=0) {
+							  if(oldx-getPos(DST).x<60&&oldy-getPos(DST).y<60)queue.add(getPos(DST));
+							}
 						//queue.add(getPos(DST));
-						if(queue.size()>15) queue.poll();
+						if(queue.size()>18) queue.poll();
 						knn k = new knn();
-						if(queue.size()==15) {
-							
+						if(queue.size()==18) {
 							int label = k.ReturnLabel(queue);
 							LabelName ln = new LabelName();
 							String name = ln.Name(label);
 							System.out.println(name);
+							Imgproc.rectangle(SRC[0],  new Point(270,178),  new Point(378,218),new Scalar(255,255,255),-1);
+							Imgproc.putText(SRC[0], name, new Point(275,205), Core.FONT_HERSHEY_COMPLEX,1,new Scalar(0,0,0) );//mat string org fontface fontsize color
 						}
 						now++;
 						

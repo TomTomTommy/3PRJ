@@ -11,9 +11,10 @@ import org.opencv.core.Point;
 public class Euclid implements Calc {
 
 	double x, y;
-	double euclid=100000;
+	double euclid=0;
 	Queue<Point>queue;
 	List<Point>copy;
+	List<Double>ListResult=new ArrayList<Double>();
 
 	/*Euclidクラスのインスタンスを生成したときに、
 	 * そのクラス内の変数としてqueueを持つようにコンストラクタに書く
@@ -23,7 +24,7 @@ public class Euclid implements Calc {
 	}
 
 	//実際の計算はここから
-	public double Calc(Sample sample) {
+	public labelDouble Calc(Sample sample) {
 		System.out.println("samplesize"+sample.SampleDatas.size());
 		//サンプルデータの取得（できたらインターフェース内にかけると良いかも・・・）
 		//ListData listt = new ListData();
@@ -38,28 +39,25 @@ public class Euclid implements Calc {
          }
 		//実際の計算
 		for (int j = 0; j < list.size(); j++) {//入力のqueueをリストに入れたい
-			double eucli=0;
 			for (int i = 0; i < 10; i ++) {//10行と仮定
 				Point p = copy.get(i);//入力画像のi番目
 				//Point p = queue.poll();
 				x = p.x;//入力画像のx
 				y = p.y;//入力画像のy
-				double oldx=x;
-				double oldy=y;
 				double lx = list.get(j).get(i).x;//サンプルのx
 				double ly = list.get(j).get(i).y;//サンプルのy
-				//if(i==0)System.out.println("data"+(j+1));
 				//System.out.println("x"+list.get(j).get(i).x);
 				//System.out.println("y"+list.get(j).get(i).y);
-				eucli += (x - lx) * (x - lx) + (y - ly) * (y - ly);
-				if(j==0) euclid = eucli;
-				if(euclid>eucli) euclid=eucli;
+				euclid += (x - lx) * (x - lx) + (y - ly) * (y - ly);
+				ListResult.add(euclid);
+				//if(j==0) euclid = eucli;
+				//if(euclid>eucli) euclid=eucli;
 				
 				//計算結果をリストに入れる
 				//distanceData.add(dc);
-
 			}
 		}
-		return euclid;
+		labelDouble lD=new labelDouble(ListResult,sample.getLabel());
+		return lD;
 	}
 }
