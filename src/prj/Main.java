@@ -34,7 +34,6 @@ import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.videoio.VideoCapture;
 
 import knn.Euclid;
-import knn.MoveAmount;
 import knn.knn;
 
 public class Main extends JPanel {
