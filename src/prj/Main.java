@@ -1,6 +1,5 @@
 package prj;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
@@ -33,8 +32,7 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.videoio.VideoCapture;
 
-import knn.Euclid;
-import knn.MoveAmount;
+//import knn.Euclid;
 import knn.knn;
 
 public class Main extends JPanel {

@@ -54,6 +54,8 @@ public class knn {
 				break;
 			}
 		}
+		MoveAmount move=new MoveAmount();
+		minLabel=move.QueueMovement(queue);
 		
 		return minLabel;
 	}

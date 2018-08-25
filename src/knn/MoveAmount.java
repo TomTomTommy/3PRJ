@@ -8,8 +8,9 @@ import org.opencv.core.Point;
 public class MoveAmount {
 
 	public static int QueueMovement(Queue<Point> queue) { //ラベルを返す
-		//Queue<Point> copy = new ArrayDeque<Point>();
+		Queue<Point> copy = new ArrayDeque<Point>();
 		Point p = queue.poll();
+		copy.add(p);
 		double x1 = p.x;
 		double y1 = p.y;
 		double X = 0; //xの変化量の合計
@@ -17,6 +18,7 @@ public class MoveAmount {
 		int label = 0; //returnするラベルの値
 		for(int i=0; i<queue.size(); i++) {
 			p = queue.poll();
+			copy.add(p);
 			double x2 = p.x;
 			double y2 = p.y;
 			
@@ -33,6 +35,10 @@ public class MoveAmount {
 		else if(absX>absY) label = 0; //歩く
 		else if(Y>0) label = 2; //立つ
 		else label = 1; //座る
+		
+		for(int i=0; i<copy.size(); i++) {
+			queue.add(copy.poll());
+		}
 
 		
 		return label;
